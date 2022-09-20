@@ -1,7 +1,8 @@
 import csv
 from datetime import date
+importFile = input('Enter location of adi file:')
+# importFile = 'km6hbh.168644.20220404042222.adi'
 
-importFile = 'km6hbh.168644.20220404042222.adi'
 adif = open(importFile, 'r')
 logLines = adif.readlines()
 header = []
