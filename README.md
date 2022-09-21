@@ -1,6 +1,5 @@
 # adif-to-csv
-Convert ADIF files to CSV using Python
-adif.py converts adi files to csv.
+Convert ADIF files to CSV using Python.
 Author: Robert Campbell, camp185@gmail.com, KM6HBH
 
 Requirements: Python and a log file in adi format.
