@@ -14,7 +14,7 @@ header = []
 data = []
 headerRow = []
 dataRow = []
-writeTo = str(date.today())
+writeTo = "ADIF_to_CSV_" + str(date.today())
 print("Saving file as: " + writeTo + ".csv")
 writeTo = writeTo + ".csv"
 
@@ -30,7 +30,7 @@ fstart = 0
 for x in range(len(logLines)):
     test = str(logLines[x]).find("<eoh>")
     if test != -1:
-        fstart = x
+        fstart = x + 1
         x = len(logLines) + 1
              
 #build header (aka first row), have to cycle through all the lines to make sure all fields are picked up
