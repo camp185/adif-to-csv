@@ -1,23 +1,29 @@
+##########CONVERT ADI HAM RADIO LOG FILES FROM QRZ TO CSV##########
 import csv
 from datetime import date
-importFile = input('Enter location of adi file:')
-# importFile = 'km6hbh.168644.20220404042222.adi'
 
+#GET FILE DATA
+#enter filename/location: C:Temp\KM6HBH@K-0207-20220620.adi
+importFile = input('Enter location of adi file:')
 adif = open(importFile, 'r')
 logLines = adif.readlines()
+
+##########SETUP LISTS AND NAME OF FILE TO SAVE##########
+##########SAVES IN SAME FOLDER AS THIS CODE##########
 header = []
 data = []
 headerRow = []
 dataRow = []
-print(len(logLines))
 writeTo = str(date.today())
 print("Saving file as: " + writeTo + ".csv")
 writeTo = writeTo + ".csv"
-# open the file in the write mode
+
+##########START THE BUILD##########
+#open the file
 f = open(writeTo, 'w', newline='')
 writer = csv.writer(f)
 
-#do a quick cleanup and figure out which line to start
+#do a quick cleanup of the log and figure out which line to start after header info
 for x in range(len(logLines)):
     logLines[x] = logLines[x].strip()
 fstart = 0
@@ -26,10 +32,8 @@ for x in range(len(logLines)):
     if test != -1:
         fstart = x
         x = len(logLines) + 1
-           
-        
-    
-#build header, have to cycle through all the lines to make sure all fields are picked up
+             
+#build header (aka first row), have to cycle through all the lines to make sure all fields are picked up
 for x in range(fstart, len(logLines)):
     if logLines[x] != "<eor>" and logLines[x] != "":
         logLines[x] = logLines[x].split(":")
@@ -39,38 +43,32 @@ for x in range(fstart, len(logLines)):
 headerRow.sort() 
 header.append(headerRow)
 
-# x = txt.find("welcomes")
-# list.insert(position, element)
-
 #build rows, and add to data to matching column
 for x in range(fstart, len(logLines)):
     if logLines[x] != "<eor>" and logLines[x] != "":
         #search which column to add it to.
         for z in range(len(headerRow)):
             test = str(logLines[x]).find(headerRow[z])
-            # if test > -1:
             if test == 2:
                 #if found, then extract data/split at >
                 logLines[x] = str(logLines[x]).split(">")[-1]
                 logLines[x] = logLines[x].replace("']", "")
                 dataRow.insert(z,logLines[x])
             else:
-                dataRow.append("")
-            
+                dataRow.append("")        
     if logLines[x] == "<eor>":
         data.append(dataRow)
         dataRow = []
-
+print("Rows added:")
 print(len(data))
 
-# write the header
+#write the header
 writer.writerow(header[0])
 
 #write the data
 for x in range(len(data)):
     writer.writerow(data[x])
 
-# write the data
-
 # close the file
 f.close()
+##########TADA##########
