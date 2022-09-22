@@ -14,7 +14,6 @@ header = []
 data = []
 headerRow = []
 dataRow = []
-prepLog = ""
 writeTo = "ADIF_to_CSV_" + str(date.today())
 print("Saving file as: " + writeTo + ".csv")
 writeTo = writeTo + ".csv"
@@ -24,21 +23,17 @@ writeTo = writeTo + ".csv"
 f = open(writeTo, 'w', newline='')
 writer = csv.writer(f)
 
-#do a quick cleanup of the log and figure out which line to start after header info, 
+#do a quick cleanup of the log and figure out which line to start after header info,
 #and type of log if need prepping
 for x in range(len(logLines)):
     logLines[x] = logLines[x].strip()
-    #prep logs:
-    if (str(logLines[x])).lower().find("WINLOG32") != -1:
-        prepLog = "WINLOG32"
-    
 fstart = 0
 for x in range(len(logLines)):
     test = (str(logLines[x])).lower().find("<eoh>")
     if test != -1:
         fstart = x + 1
         x = len(logLines) + 1
-             
+
 #build header (aka first row), have to cycle through all the lines to make sure all fields are picked up
 for x in range(fstart, len(logLines)):
     if (str(logLines[x])).lower() != "<eor>" and logLines[x] != "":
@@ -46,7 +41,7 @@ for x in range(fstart, len(logLines)):
         logLines[x][0] = logLines[x][0].replace("<", "")
         if logLines[x][0] not in headerRow:
             headerRow.append(logLines[x][0])
-headerRow.sort() 
+headerRow.sort()
 header.append(headerRow)
 
 #build rows, and add to data to matching column
@@ -61,7 +56,7 @@ for x in range(fstart, len(logLines)):
                 logLines[x] = logLines[x].replace("']", "")
                 dataRow.insert(z,logLines[x])
             else:
-                dataRow.append("")        
+                dataRow.append("")
     if (str(logLines[x])).lower() == "<eor>":
         data.append(dataRow)
         dataRow = []
