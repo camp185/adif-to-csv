@@ -14,6 +14,7 @@ header = []
 data = []
 headerRow = []
 dataRow = []
+prepLog = ""
 writeTo = "ADIF_to_CSV_" + str(date.today())
 print("Saving file as: " + writeTo + ".csv")
 writeTo = writeTo + ".csv"
@@ -23,19 +24,24 @@ writeTo = writeTo + ".csv"
 f = open(writeTo, 'w', newline='')
 writer = csv.writer(f)
 
-#do a quick cleanup of the log and figure out which line to start after header info
+#do a quick cleanup of the log and figure out which line to start after header info, 
+#and type of log if need prepping
 for x in range(len(logLines)):
     logLines[x] = logLines[x].strip()
+    #prep logs:
+    if (str(logLines[x])).lower().find("WINLOG32") != -1:
+        prepLog = "WINLOG32"
+    
 fstart = 0
 for x in range(len(logLines)):
-    test = str(logLines[x]).find("<eoh>")
+    test = (str(logLines[x])).lower().find("<eoh>")
     if test != -1:
         fstart = x + 1
         x = len(logLines) + 1
              
 #build header (aka first row), have to cycle through all the lines to make sure all fields are picked up
 for x in range(fstart, len(logLines)):
-    if logLines[x] != "<eor>" and logLines[x] != "":
+    if (str(logLines[x])).lower() != "<eor>" and logLines[x] != "":
         logLines[x] = logLines[x].split(":")
         logLines[x][0] = logLines[x][0].replace("<", "")
         if logLines[x][0] not in headerRow:
@@ -45,7 +51,7 @@ header.append(headerRow)
 
 #build rows, and add to data to matching column
 for x in range(fstart, len(logLines)):
-    if logLines[x] != "<eor>" and logLines[x] != "":
+    if (str(logLines[x])).lower() != "<eor>" and logLines[x] != "":
         #search which column to add it to.
         for z in range(len(headerRow)):
             test = str(logLines[x]).find(headerRow[z])
@@ -56,7 +62,7 @@ for x in range(fstart, len(logLines)):
                 dataRow.insert(z,logLines[x])
             else:
                 dataRow.append("")        
-    if logLines[x] == "<eor>":
+    if (str(logLines[x])).lower() == "<eor>":
         data.append(dataRow)
         dataRow = []
 print("Rows added:")
