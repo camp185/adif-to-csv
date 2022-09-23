@@ -26,16 +26,37 @@ writeTo = writeTo + ".csv"
 f = open(writeTo, 'w', newline='')
 writer = csv.writer(f)
 
-print(logLines)
+# print(logLines)
 #do a quick cleanup of the log and figure out which line to start after header info,
 for x in range(len(logLines)):
     logLines[x] = logLines[x].strip()
+    logLines[x] = logLines[x].replace("\t", "")
+    logLines[x] = logLines[x].replace("\n", "")
     
-tempLogLines = "".join(logLines)
-logLines = tempLogLines.split("<")
+# tempLogLines = "".join(logLines)
+# logLines = tempLogLines.split("<")
+# print(len(logLines))
+# for x in range(len(logLines)):
+    # logLines[x] = "<" + logLines[x]
+# print(logLines)
 
+tempLines = []  
 for x in range(len(logLines)):
-    logLines[x] = "<" + logLines[x]
+    findTags = re.findall('<[^<]*?>', logLines[x])
+
+    for y in range(len(findTags)):
+        logLines[x] = logLines[x].replace(findTags[y], "<<" + findTags[y])
+    newLines = logLines[x].split("<<")
+    if len(newLines) > 0:
+        for z in range(len(newLines)):
+            tempLines.append(newLines[z])
+
+logLines = tempLines
+while("" in logLines):
+    logLines.remove("")
+# for y in logLines:
+    # print(y)
+# print(len(logLines))
 print(logLines)
 
 
@@ -48,7 +69,7 @@ for x in range(len(logLines)):
 
 #build header (aka first row), have to cycle through all the lines to make sure all fields are picked up
 for x in range(fstart, len(logLines)):
-    if (str(logLines[x])).lower() != "<eor>" and logLines[x] != "":
+    if (str(logLines[x])).lower() != "<eor>":
         logLines[x] = logLines[x].split(":")
         logLines[x][0] = logLines[x][0].replace("<", "")
         if logLines[x][0] not in headerRow:
@@ -58,12 +79,13 @@ header.append(headerRow)
 
 #build rows, and add to data to matching column
 for x in range(fstart, len(logLines)):
-    if (str(logLines[x])).lower() != "<eor>" and logLines[x] != "":
+    if (str(logLines[x])).lower() != "<eor>":
         #search which column to add it to.
         for z in range(len(headerRow)):
             test = str(logLines[x]).find(headerRow[z])
             if test == 2:
                 #if found, then extract data/split at >
+                print(logLines[x])
                 logLines[x] = str(logLines[x]).split(">")[-1]
                 logLines[x] = logLines[x].replace("']", "")
                 dataRow.insert(z,logLines[x])
@@ -72,6 +94,7 @@ for x in range(fstart, len(logLines)):
     if (str(logLines[x])).lower() == "<eor>":
         data.append(dataRow)
         dataRow = []
+        
 print("Rows added:")
 print(len(data))
 
