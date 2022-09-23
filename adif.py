@@ -1,5 +1,6 @@
 ##########CONVERT ADI HAM RADIO LOG FILES FROM QRZ TO CSV##########
 import csv
+import re
 from datetime import date
 
 #GET FILE DATA
@@ -14,6 +15,8 @@ header = []
 data = []
 headerRow = []
 dataRow = []
+
+tempLogLines = ""
 writeTo = "ADIF_to_CSV_" + str(date.today())
 print("Saving file as: " + writeTo + ".csv")
 writeTo = writeTo + ".csv"
@@ -23,10 +26,19 @@ writeTo = writeTo + ".csv"
 f = open(writeTo, 'w', newline='')
 writer = csv.writer(f)
 
+print(logLines)
 #do a quick cleanup of the log and figure out which line to start after header info,
-#and type of log if need prepping
 for x in range(len(logLines)):
     logLines[x] = logLines[x].strip()
+    
+tempLogLines = "".join(logLines)
+logLines = tempLogLines.split("<")
+
+for x in range(len(logLines)):
+    logLines[x] = "<" + logLines[x]
+print(logLines)
+
+
 fstart = 0
 for x in range(len(logLines)):
     test = (str(logLines[x])).lower().find("<eoh>")
