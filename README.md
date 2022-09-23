@@ -1,5 +1,5 @@
 # adif-to-csv
-  Convert ADIF files to CSV using Python.
+  Convert ADIF files from QRZ, HAMRS to CSV using Python.
   Author: Robert Campbell, camp185@gmail.com, KM6HBH
 
 Requirements: 
