@@ -33,13 +33,6 @@ for x in range(len(logLines)):
     logLines[x] = logLines[x].replace("\t", "")
     logLines[x] = logLines[x].replace("\n", "")
     
-# tempLogLines = "".join(logLines)
-# logLines = tempLogLines.split("<")
-# print(len(logLines))
-# for x in range(len(logLines)):
-    # logLines[x] = "<" + logLines[x]
-# print(logLines)
-
 tempLines = []  
 for x in range(len(logLines)):
     findTags = re.findall('<[^<]*?>', logLines[x])
