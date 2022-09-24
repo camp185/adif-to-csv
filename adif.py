@@ -32,14 +32,8 @@ for x in range(len(logLines)):
     logLines[x] = logLines[x].strip()
     logLines[x] = logLines[x].replace("\t", "")
     logLines[x] = logLines[x].replace("\n", "")
+    logLines[x] = logLines[x].replace("  ", "")
     
-# tempLogLines = "".join(logLines)
-# logLines = tempLogLines.split("<")
-# print(len(logLines))
-# for x in range(len(logLines)):
-    # logLines[x] = "<" + logLines[x]
-# print(logLines)
-
 tempLines = []  
 for x in range(len(logLines)):
     findTags = re.findall('<[^<]*?>', logLines[x])
@@ -54,10 +48,7 @@ for x in range(len(logLines)):
 logLines = tempLines
 while("" in logLines):
     logLines.remove("")
-# for y in logLines:
-    # print(y)
-# print(len(logLines))
-print(logLines)
+
 
 
 fstart = 0
@@ -85,13 +76,15 @@ for x in range(fstart, len(logLines)):
             test = str(logLines[x]).find(headerRow[z])
             if test == 2:
                 #if found, then extract data/split at >
-                print(logLines[x])
                 logLines[x] = str(logLines[x]).split(">")[-1]
-                logLines[x] = logLines[x].replace("']", "")
+                logLines[x] = str(logLines[x]).replace("']", "")
+                logLines[x] = logLines[x].replace("',", "")
+                logLines[x] = logLines[x].replace("'", "")
                 dataRow.insert(z,logLines[x])
             else:
                 dataRow.append("")
     if (str(logLines[x])).lower() == "<eor>":
+
         data.append(dataRow)
         dataRow = []
         
