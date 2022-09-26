@@ -32,15 +32,7 @@ for x in range(len(logLines)):
     logLines[x] = logLines[x].strip()
     logLines[x] = logLines[x].replace("\t", "")
     logLines[x] = logLines[x].replace("\n", "")
-
-#find end of header
-fstart = 0
-for x in range(len(logLines)):
-    test = (str(logLines[x])).lower().find("<eoh>")
-    if test != -1:
-        fstart = x + 1
-        x = len(logLines) + 1
-
+    
 #Go through all lines, and slit/append new ones where multiple tags found on one line.
 for x in range(len(logLines)):
     findTags = re.findall('<[^<]*?>', logLines[x])
@@ -53,7 +45,17 @@ for x in range(len(logLines)):
             # tempLines.insert(x,newLines[z])
 logLines = tempLines
 while("" in logLines):
-    logLines.remove("")
+    logLines.remove("")    
+
+#find end of header
+fstart = 0
+for x in range(len(logLines)):
+    test = (str(logLines[x])).lower().find("<eoh>")
+    if test != -1:
+        fstart = x + 1
+        x = len(logLines) + 1
+
+
 
 #build header (aka first row), have to cycle through all the lines to make sure all fields are picked up
 for x in range(fstart, len(logLines)):
@@ -65,37 +67,36 @@ for x in range(fstart, len(logLines)):
 headerRow.sort()
 header.append(headerRow)
 
+
 #build rows, and add to data to matching column
 #row needs to be sorted to match header
+tempQso = headerRow.copy()
 for x in range(fstart, len(logLines)):
-	start = stop = 0
-	if (str(logLines[x])).lower() != "<eor>":
-		
-		#search which column to add it to.
-		for z in range(len(headerRow)):
-			test = str(logLines[x]).find(headerRow[z])
-			if test == 2:
-				#if found, then extract data/split at >
-				# logLines[x] = str(logLines[x]).split(">")[-1]
-				# logLines[x] = logLines[x].replace("']", "")
-				dataRow.insert(z,logLines[x])
+    
+    if (str(logLines[x])).lower() != "<eor>":
+        tester = 0
+        #get rows in qso, sort in a tempQso
+        for z in range(len(tempQso)):
+            test = str(logLines[x]).find(str(tempQso[z]))
+            if test == 2:
+                tempQso[z] = str(logLines[x])
+                    
+                
 
-			else:
-				dataRow.append("")
 
-	if (str(logLines[x])).lower() == "<eor>":
-		print(len(dataRow))
-		for y in range(len(dataRow)):
-			if y > len(headerRow):
-				# dataRow.pop(y)
-				print(y)
-		dataRow.sort()
-		for y in range(len(dataRow)):
-			dataRow[y] = str(dataRow[y]).split(">")[-1]
-			dataRow[y] = dataRow[y].replace("']", "")
+    if (str(logLines[x])).lower() == "<eor>":
+        #append to dataRow
+        for y in range(len(tempQso)):
+            qsoData = ""
+            qsoData = qsoData + str(tempQso[y]).split(">")[-1]
+            qsoData = qsoData.replace("']", "")
+            dataRow.append(str(qsoData))
+        print(dataRow)  
+        print("______________________")
+        data.append(dataRow)
+        dataRow = []
+        tempQso = headerRow.copy()
 
-		data.append(dataRow)
-		dataRow = []
 
 print("Rows added:")
 print(len(data))
