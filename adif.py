@@ -3,7 +3,7 @@ import csv
 import re
 from datetime import date
 
-#GET FILE DATA
+############GET FILE DATA############
 #enter filename/location: C:Temp\KM6HBH@K-0207-20220620.adi
 importFile = input('Enter location of adi file:')
 adif = open(importFile, 'r')
@@ -15,8 +15,9 @@ header = []
 data = []
 headerRow = []
 dataRow = []
+tempLines = []
+tempQso = []
 
-tempLogLines = ""
 writeTo = "ADIF_to_CSV_" + str(date.today())
 print("Saving file as: " + writeTo + ".csv")
 writeTo = writeTo + ".csv"
@@ -26,37 +27,35 @@ writeTo = writeTo + ".csv"
 f = open(writeTo, 'w', newline='')
 writer = csv.writer(f)
 
-# print(logLines)
 #do a quick cleanup of the log and figure out which line to start after header info,
 for x in range(len(logLines)):
     logLines[x] = logLines[x].strip()
     logLines[x] = logLines[x].replace("\t", "")
     logLines[x] = logLines[x].replace("\n", "")
-    logLines[x] = logLines[x].replace("  ", "")
     
-tempLines = []  
+#Go through all lines, and slit/append new ones where multiple tags found on one line.
 for x in range(len(logLines)):
     findTags = re.findall('<[^<]*?>', logLines[x])
-
     for y in range(len(findTags)):
         logLines[x] = logLines[x].replace(findTags[y], "<<" + findTags[y])
     newLines = logLines[x].split("<<")
     if len(newLines) > 0:
         for z in range(len(newLines)):
             tempLines.append(newLines[z])
-
+            # tempLines.insert(x,newLines[z])
 logLines = tempLines
 while("" in logLines):
-    logLines.remove("")
+    logLines.remove("")    
 
-
-
+#find end of header
 fstart = 0
 for x in range(len(logLines)):
     test = (str(logLines[x])).lower().find("<eoh>")
     if test != -1:
         fstart = x + 1
         x = len(logLines) + 1
+
+
 
 #build header (aka first row), have to cycle through all the lines to make sure all fields are picked up
 for x in range(fstart, len(logLines)):
@@ -68,26 +67,37 @@ for x in range(fstart, len(logLines)):
 headerRow.sort()
 header.append(headerRow)
 
-#build rows, and add to data to matching column
-for x in range(fstart, len(logLines)):
-    if (str(logLines[x])).lower() != "<eor>":
-        #search which column to add it to.
-        for z in range(len(headerRow)):
-            test = str(logLines[x]).find(headerRow[z])
-            if test == 2:
-                #if found, then extract data/split at >
-                logLines[x] = str(logLines[x]).split(">")[-1]
-                logLines[x] = str(logLines[x]).replace("']", "")
-                logLines[x] = logLines[x].replace("',", "")
-                logLines[x] = logLines[x].replace("'", "")
-                dataRow.insert(z,logLines[x])
-            else:
-                dataRow.append("")
-    if (str(logLines[x])).lower() == "<eor>":
 
+#build rows, and add to data to matching column
+#row needs to be sorted to match header
+tempQso = headerRow.copy()
+for x in range(fstart, len(logLines)):
+    
+    if (str(logLines[x])).lower() != "<eor>":
+        tester = 0
+        #get rows in qso, sort in a tempQso
+        for z in range(len(tempQso)):
+            test = str(logLines[x]).find(str(tempQso[z]))
+            if test == 2:
+                tempQso[z] = str(logLines[x])
+                    
+                
+
+
+    if (str(logLines[x])).lower() == "<eor>":
+        #append to dataRow
+        for y in range(len(tempQso)):
+            qsoData = ""
+            qsoData = qsoData + str(tempQso[y]).split(">")[-1]
+            qsoData = qsoData.replace("']", "")
+            dataRow.append(str(qsoData))
+        print(dataRow)  
+        print("______________________")
         data.append(dataRow)
         dataRow = []
-        
+        tempQso = headerRow.copy()
+
+
 print("Rows added:")
 print(len(data))
 
