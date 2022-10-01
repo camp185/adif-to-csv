@@ -32,9 +32,14 @@ for x in range(len(logLines)):
     logLines[x] = logLines[x].strip()
     logLines[x] = logLines[x].replace("\t", "")
     logLines[x] = logLines[x].replace("\n", "")
+ 
     
 #Go through all lines, and slit/append new ones where multiple tags found on one line.
 for x in range(len(logLines)):
+    #add your own fields in comments or notes by using (()) to create the field
+    logLines[x] = logLines[x].replace("((", "Xtra Field <")    
+    logLines[x] = logLines[x].replace("))", ":>")
+    #find the tags
     findTags = re.findall('<[^<]*?>', logLines[x])
     for y in range(len(findTags)):
         logLines[x] = logLines[x].replace(findTags[y], "<<" + findTags[y])
