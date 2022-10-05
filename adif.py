@@ -2,10 +2,15 @@
 import csv
 import re
 from datetime import date
+#for prorgess bar
+import sys
+import os
+import time
 
 ############GET FILE DATA############
 #enter filename/location: C:Temp\KM6HBH@K-0207-20220620.adi
-importFile = input('Enter location of adi file:')
+print("Example: C:\Temp\KM6HBH@K-0207-20220620.adi")
+importFile = input('Enter location of the adi file:')
 adif = open(importFile, 'r')
 logLines = adif.readlines()
 
@@ -19,7 +24,7 @@ tempLines = []
 tempQso = []
 
 writeTo = "ADIF_to_CSV_" + str(date.today())
-print("Saving file as: " + writeTo + ".csv")
+print("Saving file to: " + writeTo + ".csv")
 writeTo = writeTo + ".csv"
 
 ##########START THE BUILD##########
@@ -35,6 +40,15 @@ for x in range(len(logLines)):
  
     
 #Go through all lines, and slit/append new ones where multiple tags found on one line.
+#show progress
+animation = ["[■□□□□□□□□□]","[■■□□□□□□□□]", "[■■■□□□□□□□]", "[■■■■□□□□□□]", "[■■■■■□□□□□]", "[■■■■■■□□□□]", "[■■■■■■■□□□]", "[■■■■■■■■□□]", "[■■■■■■■■■□]", "[■■■■■■■■■■]"]
+# for i in range(len(animation)):
+    # time.sleep(0.2)
+    # sys.stdout.write("\r" + animation[i % len(animation)])
+    # sys.stdout.flush()
+# print("\n")
+print("Loading:")
+
 for x in range(len(logLines)):
     #add your own fields in comments or notes by using (()) to create the field
     logLines[x] = logLines[x].replace("((", "Xtra Field <")    
@@ -47,7 +61,12 @@ for x in range(len(logLines)):
     if len(newLines) > 0:
         for z in range(len(newLines)):
             tempLines.append(newLines[z])
-            # tempLines.insert(x,newLines[z])
+
+
+    sys.stdout.write("\r" + animation[int(x/8000) % len(animation)])
+    sys.stdout.flush()
+
+  
 logLines = tempLines
 while("" in logLines):
     logLines.remove("")    
@@ -61,14 +80,16 @@ for x in range(len(logLines)):
         x = len(logLines) + 1
 
 
-
-#build header (aka first row), have to cycle through all the lines to make sure all fields are picked up
+#build header (aka first row) and cycle through all the lines to make sure all fields are picked up
 for x in range(fstart, len(logLines)):
     if (str(logLines[x])).lower() != "<eor>":
         logLines[x] = logLines[x].split(":")
         logLines[x][0] = logLines[x][0].replace("<", "")
         if logLines[x][0] not in headerRow:
             headerRow.append(logLines[x][0])
+        sys.stdout.write("\r" + animation[int(x/4000) % len(animation)])
+        sys.stdout.flush()    
+
 headerRow.sort()
 header.append(headerRow)
 
@@ -96,13 +117,13 @@ for x in range(fstart, len(logLines)):
             qsoData = qsoData + str(tempQso[y]).split(">")[-1]
             qsoData = qsoData.replace("']", "")
             dataRow.append(str(qsoData))
-        print(dataRow)  
-        print("______________________")
+        # print(dataRow)  
+        # print("______________________")
         data.append(dataRow)
         dataRow = []
         tempQso = headerRow.copy()
 
-
+print("\n")
 print("Rows added:")
 print(len(data))
 
@@ -115,4 +136,10 @@ for x in range(len(data)):
 
 # close the file
 f.close()
+# give user time to close:
+print("Saved file as: " + writeTo)
+k=input("Press 'Enter' to open file and exit this applicaton") 
+dir_path = os.path.dirname(os.path.realpath(__file__))
+os.startfile(writeTo)
+
 ##########TADA##########
