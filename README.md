@@ -8,7 +8,7 @@ Requirements:
 To Run: 
   Save adif.py locally. 
   
-  You could also just run adif.exe (currenlty missing credentilas).
+  You could also just run adif.exe (currenlty missing credentilas) without having Python installed.
   Run, fill prompt by entering location of adi file, example: C:\Users\km6hbh\Downloads\km6hbh-log.adi
   A CSV file will be created titled: ADIF_to_CSV_YYYY_MM_DD.csv
   File is saved in the same folder/location as adif.py.
