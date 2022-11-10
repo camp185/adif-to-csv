@@ -9,6 +9,7 @@ To Run:
   Save adif.py or adif.exe locally. 
   
   Note: the file adif.exe is currenlty missing credentilas so you will need to allow that to work.
+  Fun Note: Create custom fields in your log book comments. Example, in QRZ I log a comment when making a POTA contact like ((POTA)) the park number. This conveter script will search the comments, and create an extra field called POTA, and then include the extar info after the field name. You could use it for anything like ((SOTA)) or ((ICOMS)) or whatever.
   
   To run, fill prompt by entering location of adi file, example: C:\Users\km6hbh\Downloads\km6hbh-log.adi
   A CSV file will be created titled: ADIF_to_CSV_YYYY_MM_DD.csv
