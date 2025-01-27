@@ -1,0 +1,12 @@
+band,call,comment,freq,gridsquare,mode,my_gridsquare,name,operator,qso_date,qso_date_off,rst_rcvd,rst_sent,station_callsign,time_off,time_on,tx_pwr
+10m ,KC0BLK ,"FT8  Sent', ' -19  Rcvd', ' +11 ",28.074986 ,EM29RB,FT8 ,CM97 ,BENJAMIN L KELLEY,N8UPC ,20240323 ,20240323 ,+11 ,-19 ,KN6NUA ,184300 ,184130 ,60W Nelson end fed half wave dipole POTA 
+10m ,N7WFK ,"FT8  Sent', ' +04  Rcvd', ' +07 ",28.074986 ,EM15 ,FT8 ,CM97 ,RICHARD L DYKSTRA,N8UPC ,20240323 ,20240323 ,+07 ,+04 ,KN6NUA ,184556 ,184415 ,60W Nelson end fed half wave dipole POTA 
+10m ,N8TMG ,"FT8  Sent', ' -07  Rcvd', ' -06 ",28.074986 ,EN73 ,FT8 ,CM97 ,Tyler M Geer,N8UPC ,20240323 ,20240323 ,-06 ,-07 ,KN6NUA ,184926 ,184715 ,60W Nelson end fed half wave dipole POTA 
+10m ,NR0Q ,"FT8  Sent', ' +09  Rcvd', ' +07 ",28.074986 ,EM16 ,FT8 ,CM97 ,"WILFRED R ""Bob"" MAGINNIS IV",N8UPC ,20240323 ,20240323 ,+07 ,+09 ,KN6NUA ,185230 ,185130 ,60W Nelson end fed half wave dipole POTA 
+10m ,W8LYO ,"FT8  Sent', ' -04  Rcvd', ' -02 ",28.074986 ,EN81 ,FT8 ,CM97 ,John F Dolinar,N8UPC ,20240323 ,20240323 ,-02 ,-04 ,KN6NUA ,185426 ,185315 ,60W Nelson end fed half wave dipole POTA 
+10m ,W8RES ,"FT8  Sent', ' -02  Rcvd', ' -11 ",28.074986 ,EM79 ,FT8 ,CM97 ,"ROBERT E ""Bob"" STOTHFANG",N8UPC ,20240323 ,20240323 ,-11 ,-02 ,KN6NUA ,185757 ,185415 ,60W Nelson end fed half wave dipole POTA 
+10m ,XE2MDH ,"FT8  Sent', ' -04  Rcvd', ' +02 ",28.074986 ,DL74QB ,FT8 ,CM97 ,H?ctor Daniel Huerta Ram?rez,N8UPC ,20240323 ,20240323 ,+02 ,-04 ,KN6NUA ,185930 ,185830 ,60W Nelson end fed half wave dipole POTA 
+10m ,N0LNO ,"FT8  Sent', ' +18  Rcvd', ' +10 ",28.074986 ,EN42 ,FT8 ,CM97 ,WILLIAM C CALDWELL,N8UPC ,20240323 ,20240323 ,+10 ,+18 ,KN6NUA ,190056 ,185945 ,60W Nelson end fed half wave dipole POTA 
+10m ,N9AGC ,"FT8  Sent', ' -01  Rcvd', ' -13 ",28.074986 ,EN91 ,FT8 ,CM97 ,GREG L SMITH,N8UPC ,20240323 ,20240323 ,-13 ,-01 ,KN6NUA ,190926 ,190800 ,60W Nelson end fed half wave dipole POTA 
+10m ,W8MSC ,"FT8  Sent', ' -08  Rcvd', ' +01 ",28.074986 ,EN82EL ,FT8 ,CM97 ,MICHAEL S CASE,N8UPC ,20240323 ,20240323 ,+01 ,-08 ,KN6NUA ,191200 ,191000 ,60W Nelson end fed half wave dipole POTA 
+10m ,KB0LCO ,"FT8  Sent', ' +08  Rcvd', ' -06 ",28.074986 ,EM38 ,FT8 ,CM97 ,LAWRENCE A LAKE,N8UPC ,20240323 ,20240323 ,-06 ,+08 ,KN6NUA ,191657 ,191300 ,60W Nelson end fed half wave dipole POTA 
