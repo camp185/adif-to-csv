@@ -15,6 +15,6 @@ To Run:
   A CSV file will be created titled: ADIF_to_CSV_YYYY_MM_DD.csv
   File is saved in the same folder/location as adif.py and will automatically open the csv file when you close/end application.
   
-  Run times are dependent on details of your log. LoTW log (24 fields) with 500 contacts, a 2-3 seconds. QRZ log (50 fields) with 500 contacts, 15 seconds. 
+  Run times are dependent on details of your log. LoTW log (24 fields) with 500 contacts, a 2-3 seconds. QRZ log (50 fields) with 500 contacts, 15 seconds. QRZ log with 4,500+ QSO's nearly 10 minutes.
 
   Troubleshooting: I recently rand this on my own QRZ log that has 4,500+ QSO. Error. I then just converted the file to ANSI, problem fixed. Notepad++ can easily do this for you.
